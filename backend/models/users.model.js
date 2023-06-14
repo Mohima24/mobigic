@@ -9,7 +9,8 @@ const userSchema = mongoose.Schema(
     verify: {
       type: Boolean,
       default: false
-    }
+    },
+    files:[]
   },
   {
     versionKey: false,

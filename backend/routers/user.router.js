@@ -7,7 +7,6 @@ userRouter.post("/resendOTPEmail",userontroller.resendOTPemail);
 userRouter.post("/verifyotp",userontroller.userOtpverify);
 userRouter.post("/login",userontroller.emaillogin);
 
-
 module.exports={
     userRouter
 }
