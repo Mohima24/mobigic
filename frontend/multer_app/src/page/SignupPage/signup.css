@@ -1,0 +1,63 @@
+*, *::before, ::after {
+  border-color: none !important;
+}
+
+.signup{
+    width: 30%;
+    border: 2px solid #9392929e;
+    height: 90vh;
+    margin: auto;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-top: 3rem;
+  }
+  
+.signup input[type="submit"]{
+    display: block;
+    width: 80%;
+    margin: 15px auto;
+    padding: 15px 10px;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    background-color: #696969;
+    border: 2px solid #696969;
+    cursor: pointer;
+    border-radius: 5px;
+}
+  
+.signup input[type="text"],
+.signup input[type="password"],
+.signup input[type="email"]{
+    display: block;
+    width: 75%;
+    margin: 15px auto;
+    padding: 15px 10px;
+    color: black;
+  }
+  
+input:hover, input:focus {
+    outline: none !important;
+    border: 2px solid #696969 !important;
+    box-shadow: none !important;
+  }
+.signup .SocialIcons{
+    width: 79%;
+    margin: auto;
+  }
+.signup .SocialIcons>div{
+    margin: 10px auto;
+    cursor: pointer;
+    display: flex;
+    width: 100%;
+    padding: 10px 0;
+    background-color: white;
+    border-radius: 5px;
+    color: rgb(48, 47, 47);
+    border: 1px solid grey !important;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+.signup input[type="submit"]:hover{
+    background-color: #696969e5;
+  }
