@@ -40,19 +40,23 @@ exports.uploadFile = async(req,res)=>{
 exports.getFile = async (req, res) => {
 
   const { fileId } = req.params;
+  const {code} = req.body
   const userID = req.headers.userID;
   
   try{
     const file =await FileModel.findById({_id:fileId})
     if (!file) {
-        return res.status(404).send('File not found');
+        return res.send({status:"FAILED",message:'File not found'});
     }
     if(userID!=file.userId){
-        return res.status(404).send('Not Authorized');
+      
+        return res.send({status:"FAILED",message:'Not Authorized'});
     }
-
+    if(file.code!=code){
+      return res.send({status:"FAILED",message:'Enter Valid Code'});
+    }
     res.setHeader('Content-Type', file.fileType);
-    res.send(file.fileData);
+    res.send({status:"OK",data:file.fileData});
   }catch(err){
     console.log(err)
   }

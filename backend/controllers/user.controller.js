@@ -24,8 +24,9 @@ exports.signupemail = async (req, res) => {
         return res.json({ status: "FAILED", "messege": "Empty Password" })
     }
     if ( email ) {
-        if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)){
-            return res.json({ status: "FAILED", "messege": "Invadil email" ,"say":"hello"})
+          const regex =  /^[\w-!#$%&'*+/=?^`{|}~]+@([\w-]+\.)+[a-zA-Z]{2,}$/
+        if(regex.test(email)!=true){
+            return res.json({ status: "FAILED", "message": "Invadil email"})
         }else{
             const finduser = await Usermodel.find({email})
             if(finduser.length>0){
@@ -46,6 +47,8 @@ exports.signupemail = async (req, res) => {
                 }
             })
         }
+    }else{
+      return res.json({ status: "FAILED", "message": "Invadil email"})
     }
 }
 
@@ -121,7 +124,7 @@ async function sendOTPVErificationEmail({_id,email},res){
           const findeuser = await Usermodel.findOne({ email })
           
           if(findeuser.verify==false){
-              res.status(403).send({status:"FAILED",message:"Wrong credentials"})
+              res.send({status:"FAILED",message:"Wrong credentials"})
               return 
           }
     
@@ -131,21 +134,20 @@ async function sendOTPVErificationEmail({_id,email},res){
             bcrypt.compare(password, hashpass, async(err, result) => {
               if(result){
                 const access_token = jwt.sign({userID:findeuser._id},process.env.userkey,{expiresIn:"7d"})    
-                res.send({"message":"login successfully",access_token,findeuser})
+                res.send({status:"OK",message:"login successfully",access_token,findeuser})
               }else{
                 res.send({status:"FAILED",message:"Wrong credentials"})
               }
             })
-    
           }else{
             res.send({status:"FAILED",message:"Wrong credentials"})
           }
     
         }else{
-          throw Error({"message":"Enter Valid Email"})
+          throw Error({message:"Enter Valid Email"})
         }
       }catch(err){
-        throw Error({"message":"log in catch error"})
+        throw Error({message:"log in catch error"})
       }
   
   }
@@ -153,17 +155,16 @@ async function sendOTPVErificationEmail({_id,email},res){
   exports.userOtpverify = async(req,res)=>{
 
     try{
-
         let {userID,otp} = req.body;
 
         if(!userID || !otp){
-            res.status(400).send("Verification went wrong")
+            res.status(400).send({status:"FAILED",message:"Verification went wrong"})
         }else{
             const userotpverification = await UserOTPVerification.find({
                 userID
             })
             if(userotpverification.length==0){
-                res.status(400).send("Account not exist")
+                res.status(400).send({status:"FAILED",message:"Account not exist"})
             }else{
                 const expiresAt = userotpverification[0].expiresAt;
                 const sendotp = userotpverification[0].otp;
@@ -171,7 +172,7 @@ async function sendOTPVErificationEmail({_id,email},res){
                 if(expiresAt < Date.now()){
 
                     await UserOTPVerification.deleteMany({userID})
-                    res.status(500).send("Code has been expired")
+                    res.status(500).send({status:"FAILED",message:"Code has been expired"})
 
                 }else{
                   bcrypt.compare(otp, sendotp, async(err, result) => {
@@ -184,17 +185,18 @@ async function sendOTPVErificationEmail({_id,email},res){
                           })
                       }else{
                           res.status(500).send({status:"FAILED",message:"Wrong otp"})
-
                       }
                   });
                 }
             }
         }
     }
+
     catch(err){
-        res.send({"err":"While verify","message":err.message})
+        res.send({"err":"While verify",message:err.message})
         console.log()
     }
 
 }
   
+

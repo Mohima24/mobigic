@@ -5,7 +5,7 @@ const multer = require('multer');
 const upload =  multer({ storage: multer.memoryStorage() });
 const fileController = require("../controllers/file.controller");
 
-fileRouter.post("/upload",authentication,upload.single('profile_pic'),fileController.uploadFile)
+fileRouter.post("/upload",authentication,upload.single('file'),fileController.uploadFile)
 fileRouter.get('/:fileId',fileController.getFile)
 fileRouter.get('/',authentication,fileController.getAllFile);
 
