@@ -6,9 +6,9 @@ import Input from "../../component/SignupCompo/Input";
 import '../SignupPage/signup.css';
 import SocialIcons from '../../component/SignupCompo/SocialIcons';
 import UserContext from '../../context/UserContext/userContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AlertCompo from '../../component/AlertCompo';
-import { CSSReset } from '@chakra-ui/react';
+
 
 const obj = {
     firstName: "",

@@ -32,7 +32,7 @@ const Content = () => {
         alert("Not matched! Please try again later")
         return
       }
-      const response = await axios.get(`http://localhost:8080/files/${fileID}/${fileCode}`,{
+      const response = await axios.get(`https://vast-bass-polo-shirt.cyclic.app/files/${fileID}/${fileCode}`,{
         headers:{
           authorization:`${data.access_token}`
         }
@@ -58,7 +58,7 @@ const Content = () => {
       return
     }
       try {
-        const response = await axios.delete(`http://localhost:8080/files/delete/${fileId}`,{
+        const response = await axios.delete(`https://vast-bass-polo-shirt.cyclic.app/files/delete/${fileId}`,{
           headers:{
             authorization:`${data.access_token}`
           }
@@ -85,7 +85,7 @@ const Content = () => {
       formData.append('file', selectedFile);
 
       try {
-        const response = await axios.post('http://localhost:8080/files/upload', formData, {
+        const response = await axios.post('https://vast-bass-polo-shirt.cyclic.app/files/upload', formData, {
           headers: {
             authorization: `${data.access_token}`,
             'Content-Type': 'multipart/form-data',
@@ -122,7 +122,7 @@ const Content = () => {
       if(data.status!="OK"){
         return
       }
-      const response = await axios.get('http://localhost:8080/files/', {
+      const response = await axios.get('https://vast-bass-polo-shirt.cyclic.app/files/', {
         headers: {
           authorization: `${data.access_token}`,
         },

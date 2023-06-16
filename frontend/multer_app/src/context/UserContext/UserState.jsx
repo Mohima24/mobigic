@@ -7,7 +7,7 @@ const UserState = ({ children }) => {
     const [err, setErr] = useState(false)
     const navigate = useNavigate();
     
-    const url = "http://localhost:8080/users";
+    const url = "https://vast-bass-polo-shirt.cyclic.app/users";
   
     const postUser = (obj) => {
 
