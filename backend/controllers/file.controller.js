@@ -2,7 +2,7 @@
 
 const {Usermodel} = require("../models/users.model");
 const {FileModel} = require('../models/file.model');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const multer = require('multer');
 const upload =  multer({ storage: multer.memoryStorage() });
 
@@ -39,24 +39,28 @@ exports.uploadFile = async(req,res)=>{
 
 exports.getFile = async (req, res) => {
 
-  const { fileId } = req.params;
-  const {code} = req.body
+  const { fileId ,code } = req.params;
   const userID = req.headers.userID;
-  
+  // console.log("hello")
   try{
     const file =await FileModel.findById({_id:fileId})
     if (!file) {
         return res.send({status:"FAILED",message:'File not found'});
     }
     if(userID!=file.userId){
-      
         return res.send({status:"FAILED",message:'Not Authorized'});
     }
-    if(file.code!=code){
+    
+    if(file.fileCode!=code){
       return res.send({status:"FAILED",message:'Enter Valid Code'});
     }
     res.setHeader('Content-Type', file.fileType);
-    res.send({status:"OK",data:file.fileData});
+    
+    res.set({
+      'Content-Disposition': `attachment; filename=${file.filename}`,
+      'Content-Type': 'application/octet-stream',
+    })
+    res.send({data:file.fileData});
   }catch(err){
     console.log(err)
   }
@@ -66,7 +70,7 @@ exports.getAllFile = async (req, res) => {
     const userID = req.headers.userID;
   
     try{
-        // const user = await Usermodel.findById({_id:'648891dc5c3410b495476d9f'})
+
       const userFileData = await Usermodel.aggregate([
         { 
             $match: { $expr : { $eq: [ '$_id' , { $toObjectId: userID } ] } } 
@@ -100,3 +104,30 @@ exports.getAllFile = async (req, res) => {
     }
 };
   
+exports.deleteFile = async (req, res) => {
+
+  const { fileId } = req.params;
+  const userID = req.headers.userID;
+  try{
+    const file =await FileModel.findById({_id:fileId})
+    const user = await Usermodel.findById({_id:userID})
+    if(!file){
+      return res.send({status:"FAILED",message:"File Not Found"})
+    }
+    if(!user){
+      res.send({status:"FAILED",message:"User Not Authorised"})
+    }
+    if(userID==file.userId){
+      await FileModel.findByIdAndDelete({_id:fileId});
+      await Usermodel.findByIdAndUpdate({_id:`${userID}`},
+      {'$pull':{'files': new mongoose.Types.ObjectId(`${fileId}`)}},
+      { new: true }
+      )
+      return res.send({status:"DELETED","messege":"Deleted Successfully"})
+    }else{
+      return res.send({status:"FAILED","messege":"User Not Authorised"})
+    }
+  }catch(err){
+    console.log(err)
+  }
+};

@@ -1,0 +1,29 @@
+.filesContains{
+    width: 80%;
+    margin: auto;
+}
+.Cards{
+    width: 100%;
+    display: grid;
+    height: auto;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+    justify-content: space-evenly;
+    margin: 3rem 0;
+}
+.FileCard{
+    width: 85%;
+    height: 20vh;
+    margin: auto;
+    border: 2px solid black;
+    padding: 2rem 1rem;
+}
+.FileCard button{
+    font-size: 1.5rem;
+    background-color: black;
+    color: #37ac93;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    margin: 2rem;
+}

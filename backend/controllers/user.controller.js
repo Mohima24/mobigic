@@ -1,7 +1,7 @@
 
 const { Usermodel } = require("../models/users.model");
 const { UserOTPVerification } = require("../models/otp.model");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 const nodemailer= require("nodemailer");
 const jwt = require("jsonwebtoken");
 require("dotenv").config()
